@@ -40,13 +40,6 @@ var TabTimer = function(tab) {
   this.stop = function() {
     this.hasStarted = false;
     clearInterval(timerId);
-  };
-  this.reset = function() {
-    this.stop();
-    chrome.storage.sync.get('showHours', function(response) {
-      var showHours = (response.showHours == 1) ? true : false;
-      var clockStr = showHours ? '00:00:00' : '00:00';
-      chrome.tabs.executeScript(tabId, {code:'document.title = "' + clockStr +  '";'});
     });
   };
 };
@@ -62,11 +55,6 @@ var TimerManager = function(tab) {
   };
   this.stop = function() {
     currTimer.stop();
-    chrome.browserAction.setBadgeText({text: '', tabId: tabId});
-  };
-  this.reset = function() {
-    currTimer.reset();
-    delete(tabTimers[tabId]);
     chrome.browserAction.setBadgeText({text: '', tabId: tabId});
   };
   this.hasStarted = function() {
